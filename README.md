@@ -1,7 +1,6 @@
 # Algorithms and Data Structures
 
-Implementations of algorithms and structures written as part of laboratory and course works ETU
-_(Then they will be added to this list of implementations in other languages)_
+List of algorithms and  structures implementations.
 
 
 ![my favorite c++](https://github.com/MercyFlesh/images/blob/master/algorithms/myCpp.png)
@@ -14,7 +13,7 @@ _(Then they will be added to this list of implementations in other languages)_
 |Bucket sort|[:white_check_mark:]()|||
 |Insertion sort||[:white_check_mark:]()||
 |Kruskal algorithm||[:white_check_mark:](Kruskal_algorithm/Kraskal.py)||
-|Merge sort||[:white_check_mark:]()||
+|Merge sort|[:white_check_mark:](/merge_sort/merge_sort.cpp)|||
 |QuickSort|[:white_check_mark:](/quicksort/quicksort.cpp)|[:white_check_mark:](/quicksort/quicksort.py)||
 |TimSort||[:white_check_mark:](/timsort/timsort.py)||
 
