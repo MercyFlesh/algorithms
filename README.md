@@ -10,7 +10,7 @@ List of algorithms and  structures implementations.
 |Algorithm|CPP|Python|Java|Go|
 |:--------------|:----------------:|:----------------:|:----------------:|:----------------:|
 |Binary search|[:white_check_mark:](/binary_search/binary_search.cpp)|[:white_check_mark:](/binary_search/binary_search.py)||[:white_check_mark:](/binary_search/binarySearch.go)|
-|Bubble sort|[:white_check_mark:](/bubble_sort/bubble_sort.cpp)||||
+|Bubble sort|[:white_check_mark:](/bubble_sort/bubble_sort.cpp)|[:white_check_mark:](/bubble_sort/bubble_sort.py)|||
 |Bucket sort|[:white_check_mark:](/bucket_sort/bucket_sort.cpp)||||
 |Insertion sort||[:white_check_mark:](/insertion_sort/InsertionSort.py)|||
 |Kruskal algorithm||[:white_check_mark:](Kruskal_algorithm/Kraskal.py)|||
