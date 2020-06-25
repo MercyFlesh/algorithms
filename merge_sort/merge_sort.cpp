@@ -3,60 +3,68 @@
 
 using namespace std;
 
-template<typename T>
-vector<T> merge(vector<T> &arr, vector<T> l, vector<T> r, int left, int right) 
+
+template<typename InputIt, typename OutputIt>
+void merge(InputIt first_begin, InputIt first_end,
+	InputIt second_begin, InputIt second_end,
+	OutputIt out_begin)
 {
-	int i = 0, j = 0, k = 0;
-	
-	while (i < left && j < right) 
+	while (first_begin != first_end && second_begin != second_end)
 	{
-		if (l[i] <= r[j])
-			arr[k++] = l[i++];
+		if (*first_begin <= *second_begin)
+		{
+			*out_begin = *first_begin;
+			first_begin++;
+		}
 		else
-			arr[k++] = r[j++];
+		{
+			*out_begin = *second_begin;
+			second_begin++;
+		}
+
+		out_begin++;
 	}
-	
-	while (i < left)
-		arr[k++] = l[i++];
 
-	while (j < right)
-		arr[k++] = r[j++];
+	while (first_begin != first_end)
+	{
+		*out_begin = *first_begin;
+		first_begin++;
+		out_begin++;
+	}
 
-	return arr;
+	while (second_begin != second_end)
+	{
+		*out_begin = *second_begin;
+		second_begin++;
+		out_begin++;
+	}
 }
 
 
-template<typename T>
-vector<T> mergeSort(vector<T> &arr, int n)
+template <typename RandomIt>
+void MergeSort(RandomIt range_begin, RandomIt range_end)
 {
-	if (n < 2)
-		return arr;
+	if ((range_end - range_begin) > 1)
+	{
+		int mid = (range_end - range_begin) / 2;
+		vector<typename RandomIt::value_type> left(range_begin, range_begin + mid);
+		vector<typename RandomIt::value_type> right(range_begin + mid, range_end);
 
-	int mid = n / 2;
-	vector<T> l(mid);
-	vector<T> r(n - mid);
+		MergeSort(left.begin(), left.end());
+		MergeSort(right.begin(), right.end());
 
-	for (int i = 0; i < mid; i++)
-		l[i] = arr[i];
-
-	for (int i = mid; i < n; i++)
-		r[i - mid] = arr[i];
-
-	mergeSort(l, mid);
-	mergeSort(r, n - mid);
-
-	return merge(arr, l, r, mid, n - mid);
+		merge(left.begin(), left.end(), right.begin(), right.end(), range_begin);
+	}
 }
 
 
-int main(int argc, char* argv[])
-{	
-	vector<int> vec = { 12, 11, 13, 5, 6, 7 };
-	mergeSort(vec, 6);
-	
-	for (auto n : vec)
-		cout << n << " ";
-	cout << endl;
+int main()
+{
+	vector<int> vec = { 3, 5, 1, 4, 7 };
+	MergeSort(vec.begin(), vec.end());
+
+	for (const auto& i : vec)
+		cout << i << " ";
 
 	return 0;
 }
