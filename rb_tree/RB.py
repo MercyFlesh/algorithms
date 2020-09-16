@@ -348,41 +348,42 @@ class RB:
             return False
 
 
-    def __plot_node(self, node, level=1, pos_x=0, pos_y=0):
+    def __plot_node(self, node, show_none_leafs_flag, level=1, pos_x=0, pos_y=0):
         width = 2000 * (0.5 ** level)
 
-        if node and not node.red: 
+        if not node.red: 
             plt.text(pos_x, pos_y, str(node.key), horizontalalignment = 'center', color='k', fontsize=12)
         else: 
             plt.text(pos_x, pos_y, str(node.key), horizontalalignment='center',color='r', fontsize=12)
     
-        if node and node.left:
+        if node.left and (node.left.key or show_none_leafs_flag):
             p_x = [pos_x, pos_x - width]
             p_y = [pos_y - 1, pos_y - 15]
 
-            if node.left and not node.left.red: 
+            if not node.left.red: 
                 plt.plot(p_x, p_y,'k-')
             else: 
                 plt.plot(p_x,p_y,'k-')
-            self.__plot_node(node.left, level + 1, pos_x - width, pos_y - 20)
+            self.__plot_node(node.left, show_none_leafs_flag, level + 1, pos_x - width, pos_y - 20)
     
-        if node and node.right:
-            self.__plot_node(node.right, level + 1, pos_x + width, pos_y - 20)
+        if node.right and (node.right.key or show_none_leafs_flag):
+            self.__plot_node(node.right, show_none_leafs_flag, level + 1, pos_x + width, pos_y - 20)
             p_x = [pos_x, pos_x + width]
             p_y = [pos_y - 1, pos_y - 15]
-            if node.right and node.right.red == 0:  
+            if node.right.red == 0:  
                 plt.plot(p_x, p_y, 'k-')
             else: 
                 plt.plot(p_x, p_y, 'k-')
 
 
-    def show_tree(self):
+    def show_tree(self, show_none_leafs_flag=False):
        node = self.__root
        rcParams['figure.figsize'] = (8, 5)
        fig, ax = plt.subplots()
        ax.axis('off')
        if not self.is_empty():
-            self.__plot_node(node)
+            self.__plot_node(node, show_none_leafs_flag)
+
        plt.show()
 
 
