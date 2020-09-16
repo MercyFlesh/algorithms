@@ -17,8 +17,8 @@ class _node:
 
 
 class _none_leaf(_node):
-    def __init__(self):
-        super().__init__(red=False)    
+    def __init__(self, parent):
+        super().__init__(red=False, parent=parent)    
 
 
 class RB:        
@@ -26,25 +26,29 @@ class RB:
         self.__root = None
         self.__size = 0
 
+
     def __iter__(self):
         arr = []
         self.__getlist(self.__root, arr)
         for i in arr:
             yield i
 
+
     def __getitem__(self, index):
         arr = []
         self.__getlist(self.__root, arr)
         return arr[index]
-    
+
+
     def __getlist(self, root, arr=[], count=0):
-        if root:
+        if root.key:
             count += 1
             self.__getlist(root.left, arr, count)
             arr.append(root)
             self.__getlist(root.right, arr, count)
         if count == self.__size:
             return arr
+
 
     def get_keys_list(self):
         arr = []
@@ -54,6 +58,7 @@ class RB:
 
         return arr           
 
+
     def print(self):
         arr = []
         for n in self:
@@ -61,11 +66,22 @@ class RB:
         print(arr)
         
         
-    def insert(self, key, val=None):
-        new_node = _node(key, val)
-        this_node = self.__root
-        self.__size += 1
-        
+    def find(self, key):
+        find_node = self.__root
+        if find_node:
+            while find_node.key != key and find_node.key is not None:
+                if find_node.key > key:
+                    find_node = find_node.left
+                else:
+                    find_node = find_node.right
+        if find_node and find_node.key:
+            return find_node
+        else:
+            return None
+
+
+    def _find_parent(self, key):
+        parent_node = this_node = self.__root
         if this_node:
             while this_node.key is not None:
                 parent_node = this_node
@@ -73,23 +89,30 @@ class RB:
                     this_node = this_node.left
                 else:
                     this_node = this_node.right
-                
+        return parent_node
+
+
+    def insert(self, key, val=None):
+        new_node = _node(key, val)
+        self.__size += 1
+        parent_node = self._find_parent(key)
+        if parent_node:
             new_node.parent = parent_node
-            new_node.left = _none_leaf()
-            new_node.right = _none_leaf()    
+            new_node.left = _none_leaf(new_node)
+            new_node.right = _none_leaf(new_node)    
+            
             if key < parent_node.key:
                 parent_node.left = new_node
             else:
                 parent_node.right = new_node
             self.__balance_insert(new_node)
-        
         else:
             self.__root = new_node
             new_node.red = False
-            new_node.right = _none_leaf()
-            new_node.left = _none_leaf()
+            new_node.right = _none_leaf(new_node)
+            new_node.left = _none_leaf(new_node)
           
-            
+
     def delete(self, key):
         this_node = self.__root
         if this_node:
@@ -175,49 +198,6 @@ class RB:
                 next.right.parent = next
             if not color:
                 self.__balance_delete(x, original_color)
-            
-      
-    def __balance_insert(self, new_node):
-        grandfather = new_node.parent.parent
-        while new_node.parent.red:    
-            if new_node.parent is grandfather.left:
-                uncle = grandfather.right
-                if uncle:
-                    if uncle.red:
-                        new_node.parent.red = False
-                        uncle.red = False
-                        grandfather.red = True
-                        new_node = grandfather
-                else:
-                    if new_node is new_node.parent.right:
-                        new_node = new_node.parent
-                        self.__rotate_left(new_node)
-                    
-                    new_node.parent.red = False
-                    grandfather = new_node.parent.parent
-                    grandfather.red = True
-                    self.__rotate_right(grandfather)    
-            else:
-                uncle = grandfather.left
-                
-                if uncle and uncle.red:
-                        new_node.parent.red = False
-                        uncle.red = False
-                        grandfather.red = True
-                        new_node = grandfather
-                        if new_node.parent:
-                            grandfather = new_node.parent.parent
-                else:
-                    if new_node is new_node.parent.left:
-                        new_node = new_node.parent
-                        self.__rotate_right(new_node)
-                    new_node.parent.red = False
-                    grandfather = new_node.parent.parent
-                    grandfather.red = True
-                    self.__rotate_left(grandfather)
-            if new_node is self.__root:
-                break
-        self.__root.red = False
 
 
     def __balance_delete(self, del_node, original_color):
@@ -293,7 +273,7 @@ class RB:
     def __rotate_left(self, rotate_node):
         buf_brother = rotate_node.right
         rotate_node.right = buf_brother.left
-        if buf_brother.left:
+        if buf_brother.left.key:
             buf_brother.left.parent = rotate_node
         buf_brother.parent = rotate_node.parent
         if not rotate_node.parent:
@@ -307,7 +287,7 @@ class RB:
         rotate_node.parent = buf_brother
 
 
-    def get_count(self):
+    def get_size(self):
         return self.__size
 
 
@@ -316,20 +296,7 @@ class RB:
     
 
     def change_root(self, val=None):
-        self.__root.val = val 
-    
-
-    def get_node(self, key):
-        this_node = self.__root
-        while this_node.key != key:
-            if key < this_node.key:
-                this_node = this_node.left
-            else:
-                this_node = this_node.right
-            if not this_node:
-                return
-
-        return this_node
+        self.__root.val = val
     
     
     def set_value(self, key, val=None):
@@ -341,14 +308,15 @@ class RB:
                 this_node = this_node.right
             if not this_node:
                 return
-
         this_node.val = val
   
+
     def is_empty(self):
         if not self.__root:
             return True
         else:
             return False
+
 
     def __plot_node(self, node, level=1, pos_x=0, pos_y=0):
         width = 2000 * (0.5 ** level)
@@ -385,28 +353,19 @@ class RB:
        ax.axis('off')
        if not self.is_empty():
             self.__plot_node(node)
-
        plt.show()
-
-
 
 
 if __name__ == "__main__":
     test_cases = [
-        0, 1, 2, 3, 4, 5, 6, 7,
-        8, 9, 10, 11, 12, 13, 14, 
-        15, 16, 17, 18, 18, 20, 21
+        30, 40, 25, 15, 26,
+        28, 29, 10, 17, 8,
+        20, 23, 21, 24, 6,
+        4
     ]
+
     a = RB()
     for i in test_cases:
         a.insert(i)
-    a.delete(0)
-    a.delete(2)
-    a.delete(5)
-    a.delete(7)
-    a.delete(18)
-    a.delete(9)
-    a.delete(17)
-    a.delete(20)
-    a.delete(16)
+
     a.show_tree()
