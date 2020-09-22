@@ -1,25 +1,27 @@
-#ifndef STACK
-#define STACK
+#pragma once
+#include <memory>
+
 
 template <typename T>
-class stack
+class MyStack
 {
-private:
-	T *data;
-	int last_count;
-	int max_count;
-
 public:
-	stack();
-	void push(T num);
+	MyStack();
+	MyStack(const MyStack<T>& other);
+	MyStack(MyStack<T>&& other) noexcept;
+	void operator= (const MyStack<T>& other);
+	void operator= (MyStack<T>&& otheer) noexcept;
+	~MyStack();
+
+	void push(const T& num);
 	void pop();
 	T top();
-	int size();
-	bool empty();
-	void swap(stack<T> &stak2);
-	void print();
 
-	~stack();
+	int size() const;
+	bool empty() const;
+
+private:
+	std::unique_ptr<T[]> data;
+	unsigned size_;
+	unsigned capacity;	
 };
-
-#endif 

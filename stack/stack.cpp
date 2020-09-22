@@ -1,90 +1,122 @@
-#include "stack.h"
-#include <iostream>
+#include "MyStack.hpp"
+#include <utility>
+
+using namespace std;
+
 
 template<typename T> 
-stack<T>::stack()
-{
-	last_count = 0;
-	max_count = 1;
-	data = new T[max_count];
-}
+MyStack<T>::MyStack()
+	: size_(0), capacity(1), data(new T[1]){}
+
 
 template<typename T>
-void stack<T>::push(T newData)
+MyStack<T>::MyStack(const MyStack<T>& other)
+	: size_(other.size_), capacity(other.capacity)
 {
-	if (last_count < max_count)
+	data.reset(new T[capacity]);
+	for (size_t i = 0; i < size_; i++)
+		data[i] = other.data[i];
+}
+
+
+template<typename T>
+MyStack<T>::MyStack(MyStack<T>&& other) noexcept
+	: size_(other.size_), capacity(other.capacity), 
+	data(move(other.data))
+{
+	other.size_ = other.capacity = 0;
+}
+
+
+template<typename T>
+void MyStack<T>::operator= (const MyStack<T>& other)
+{
+	size_ = other.size_;
+	capacity = other.capacity;
+	data.reset(new T[capacity]);
+
+	for (size_t i = 0; i < size_; i++)
+		data[i] = other.data[i];
+}
+
+
+template<typename T>
+void MyStack<T>::operator= (MyStack<T>&& other) noexcept
+{
+	size_ = other.size_;
+	capacity = other.capacity;
+	data = move(other.data);
+
+	other.size_ = other.capacity = 0;
+}
+
+
+template<typename T>
+void MyStack<T>::push(const T& newData)
+{
+	if (size_ < capacity)
 	{
-		data[last_count] = newData;
-		last_count++;
+		data[size_] = newData;
+		size_++;
 	}
 	else
 	{
-		T *new_data = new T[max_count + 1];
-		memmove(new_data, data, max_count * sizeof(T));
-		delete[] data;
-		data = new_data;
-		data[last_count] = newData;
-		max_count++;
-		last_count++;
+		unique_ptr<T[]> tmp(new T[capacity * 2]);
+		for (size_t i = 0; i < size_; i++)
+			tmp[i] = data[i];
+		
+		data = move(tmp);
+		data[size_] = newData;
+		capacity *= 2;
+		size_++;
 	}
 }
 
+
 template<typename T>
-void stack<T>::pop()
+void MyStack<T>::pop()
 {
-	if (last_count > 0)
+	if (size_ > 0)
 	{
-		last_count--;
+		unique_ptr<T[]> tmp(new T[capacity]);
+		for (size_t i = 0; i < size_ - 1; i++)
+			tmp[i] = move(data[i]);
+		
+		data = move(tmp);
+		size_--;
 	}
 }
 
+
 template<typename T>
-T stack<T>::top()
+T MyStack<T>::top()
 {
-	return data[last_count - 1];
+	return data[size_ - 1];
 }
 
 
 template<typename T>
-int stack<T>::size()
+int MyStack<T>::size() const
 {
-	return last_count;
+	return size_;
 }
-
-template<typename T>
-bool stack<T>::empty()
-{
-	if (last_count != 0)
-		return true;
-	else
-		return false;
-}
-
-
 
 
 template<typename T>
-void stack<T>::swap(stack<T> &stack2)
+bool MyStack<T>::empty() const
 {
-	std::swap(last_count, stack2.last_count);
-	std::swap(max_count, stack2.max_count);
-	std::swap(data, stack2.data);
+	return size_ == 0;
 }
+
 
 template<typename T>
-void stack<T>::print()
+MyStack<T>::~MyStack()
 {
-	for (int i = 0; i < last_count; i++)
-		std::cout << data[i];
+	data.reset();
 }
 
-template<typename T>
-stack<T>::~stack()
-{
-	delete[] data;
-}
 
-template class stack<int>;
-template class stack<double>;
-template class stack<float>;
-template class stack<char>;
+template class MyStack<int>;
+template class MyStack<double>;
+template class MyStack<float>;
+template class MyStack<char>;
