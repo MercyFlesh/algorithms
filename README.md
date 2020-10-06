@@ -13,7 +13,8 @@ List of algorithms and  structures implementations.
 |Bubble sort|[:white_check_mark:](/bubble_sort/bubble_sort.cpp)|[:white_check_mark:](/bubble_sort/bubble_sort.py)||[:white_check_mark:](/bubble_sort/bubbleSort.go)|
 |Bucket sort|[:white_check_mark:](/bucket_sort/bucket_sort.cpp)||||
 |Insertion sort|[:white_check_mark:](/insertion_sort/insertion_sort.cpp)|[:white_check_mark:](/insertion_sort/InsertionSort.py)|||
-|Kruskal algorithm||[:white_check_mark:](Kruskal_algorithm/Kraskal.py)|||
+|Kruskal algorithm||[:white_check_mark:](kruskal_algorithm/Kraskal.py)|||
+|KMP searche|[:white_check_mark:](kmp_search/KMP_search.cpp)||||
 |Merge sort|[:white_check_mark:](/merge_sort/merge_sort.cpp)||||
 |QuickSort|[:white_check_mark:](/quicksort/quicksort.cpp)|[:white_check_mark:](/quicksort/quicksort.py)|||
 |Reverse Polish notation|[:white_check_mark:](reverse_Polish_notation/postfix_notation.cpp)||||
