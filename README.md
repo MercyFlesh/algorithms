@@ -18,6 +18,7 @@ List of algorithms and  structures implementations.
 |Merge sort|[:white_check_mark:](/merge_sort/merge_sort.cpp)||||
 |QuickSort|[:white_check_mark:](/quicksort/quicksort.cpp)|[:white_check_mark:](/quicksort/quicksort.py)|||
 |Reverse Polish notation|[:white_check_mark:](reverse_Polish_notation/postfix_notation.cpp)||||
+|Shell sort|[:white_check_mark:](shell_sort/shell_sort.cpp)||||
 |TimSort|[:white_check_mark:](/timsort/timsort.cpp)|[:white_check_mark:](/timsort/timsort.py)|||
 
 
