@@ -16,6 +16,7 @@ List of algorithms and  structures implementations.
 |Kruskal algorithm||[:white_check_mark:](kruskal_algorithm/Kraskal.py)|||
 |KMP searche|[:white_check_mark:](kmp_search/KMP_search.cpp)||||
 |Merge sort|[:white_check_mark:](/merge_sort/merge_sort.cpp)||||
+|Naive search||[:white_check_mark:](/naive_search/naive_search.py)|||
 |QuickSort|[:white_check_mark:](/quicksort/quicksort.cpp)|[:white_check_mark:](/quicksort/quicksort.py)|||
 |Reverse Polish notation|[:white_check_mark:](reverse_Polish_notation/postfix_notation.cpp)||||
 |Shell sort|[:white_check_mark:](shell_sort/shell_sort.cpp)||||
